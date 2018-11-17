@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.br.myexpenses.model.Categoria;
+import com.br.myexpenses.ws.rest.response.CategoriaResponse;
 
 @Path("/categoriaService")
 public class CategoriaService {
@@ -18,12 +18,12 @@ public class CategoriaService {
 	@Path("/getCategorias")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public List<Categoria> getCategorias() {
-		Categoria c = null;
-		List<Categoria> list = new ArrayList<Categoria>();
-		for (int i = 0; i < 10; i++) {
-			c = new Categoria();
-			c.setTipo("Tipo " + i);
+	public List<CategoriaResponse> getCategorias() {
+		CategoriaResponse c = null;
+		List<CategoriaResponse> list = new ArrayList<CategoriaResponse>();
+		for (int i = 0; i < 50; i++) {
+			c = new CategoriaResponse();
+			c.setTipoCategoria("Tipo " + i);
 			c.setDescricao("Descricão Categoria " + i);
 			list.add(c);
 		}
