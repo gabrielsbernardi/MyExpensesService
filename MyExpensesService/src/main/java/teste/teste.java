@@ -15,7 +15,11 @@ public class teste {
 		
 		Categoria categoria2 = new Categoria(1,7,"teste alterado2", "teste alterado2");
 		
-		c.atualizar(categoria2, 7);
+		//c.atualizar(categoria2, 7);
+		
+		c.excluir(7);
+		
+		
 
 	}
 }
