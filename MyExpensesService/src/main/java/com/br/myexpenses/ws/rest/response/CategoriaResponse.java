@@ -1,6 +1,6 @@
 package com.br.myexpenses.ws.rest.response;
 
-public class CategoriaResponse {
+public class CategoriaResponse extends DefaultResponse {
 	
 	private String tipoCategoria;
 	private String descricao;

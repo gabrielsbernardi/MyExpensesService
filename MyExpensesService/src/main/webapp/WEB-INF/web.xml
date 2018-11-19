@@ -41,7 +41,7 @@
 		</init-param>
 		<init-param>
 			<param-name>allowedHeaders</param-name>
-			<param-value>origin, content-type, accept</param-value>
+			<param-value>origin, content-type, accept, Access-Control-Allow-Origin</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>

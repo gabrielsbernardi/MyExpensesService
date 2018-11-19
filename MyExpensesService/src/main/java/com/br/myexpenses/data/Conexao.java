@@ -10,9 +10,9 @@ public class Conexao {
     private String pass;
     
     public Conexao() {     
-    	url = "jdbc:postgresql://localhost:5432/myexpenses"; //incica o caminho do banco de dados
+    	url = "jdbc:postgresql://localhost:5433/myexpenses"; //incica o caminho do banco de dados
         usr = "postgres"; // aqui vai o nome usuario que vc quer acessar
-        pass = "masterkey"; // aqui a senha do seu banco
+        pass = "gabrielpgadmin2018"; // aqui a senha do seu banco
     }
     
     private Connection getConnection(){
