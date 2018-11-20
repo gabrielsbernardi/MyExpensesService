@@ -10,14 +10,14 @@ public class Despesa {
 	
 	
 	@Column(name="usuario")
-	private Integer usuario;
+	@ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Usuario usuario;
 	
 	@Id
 	@GeneratedValue
 	@Column(name="id")
 	private Long id;
-	
-	
+		
 	@Column(name="parcela")
 	private Integer parcela;
 	
@@ -31,16 +31,17 @@ public class Despesa {
 	private Date dataCompra;
 	
 	@Column(name="categoria")
-	private Integer categoria;
+	@ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Categoria categoria;
 	
 	@Column(name="valor")
 	private double valor;
 
-	public int getUsuario() {
+	public Usuario getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(int usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
@@ -84,11 +85,11 @@ public class Despesa {
 		this.dataCompra = dataCompra;
 	}
 
-	public int getCategoria() {
+	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(int categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 

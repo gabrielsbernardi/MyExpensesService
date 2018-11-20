@@ -2,11 +2,13 @@ package com.br.myexpenses.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +17,8 @@ public class Credito {
 	
 	
 	@Column(name="usuario")
-	private Integer usuario;
+	@ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Usuario usuario;
 	
 	@Id
 	@GeneratedValue
@@ -36,11 +39,11 @@ public class Credito {
 	private Date data;
 	
 	
-	public int getUsuario() {
+	public Usuario getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(int usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 

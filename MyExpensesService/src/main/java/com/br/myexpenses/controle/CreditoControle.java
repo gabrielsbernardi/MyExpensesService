@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 
 import com.br.myexpenses.data.ConexaoDB;
 import com.br.myexpenses.model.Credito;
-import com.br.myexpenses.model.Despesa;
 
 public class CreditoControle {
 

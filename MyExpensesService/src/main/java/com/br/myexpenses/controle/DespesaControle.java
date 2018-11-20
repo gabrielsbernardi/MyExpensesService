@@ -3,7 +3,6 @@ package com.br.myexpenses.controle;
 import javax.persistence.*;
 
 import com.br.myexpenses.data.ConexaoDB;
-import com.br.myexpenses.model.Categoria;
 import com.br.myexpenses.model.Despesa;
 
 public class DespesaControle {
