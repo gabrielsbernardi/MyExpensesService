@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class Categoria {
 
 	@Column(name="usuario")
-	private Integer usuario;
+	@ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Usuario usuario;
 	
 	@Id
 	@Column(name="id")
@@ -22,13 +23,6 @@ public class Categoria {
 	
 	public Categoria() {
 		
-	}
-	
-	public Categoria(int usuario, int id, String tipo, String descricao) {
-		this.usuario = usuario;
-		this.id = id;
-		this.tipo = tipo;
-		this.descricao = descricao;
 	}
 
 	public String getTipo() {
@@ -47,11 +41,11 @@ public class Categoria {
 		this.descricao = descricao;
 	}
 
-	public int getUsuario() {
+	public Usuario getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(int usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
