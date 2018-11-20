@@ -23,4 +23,31 @@ public class CategoriaService {
 		CategoriaControle cc = new CategoriaControle();
 		return cc.getCategorias(request.getIdUsuario());
 	}
+	
+	@POST
+	@Path("/inserirCategoria")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public CategoriaResponse inserirCategoria(CategoriaRequest request) throws Exception {
+		CategoriaControle cc = new CategoriaControle();
+		return cc.inserirCategoria(request);
+	}
+	
+	@POST
+	@Path("/atualizarCategoria")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public void atualizarCategoria(CategoriaRequest request) throws Exception {
+		CategoriaControle cc = new CategoriaControle();
+		cc.atualizarCategoria(request);
+	}
+	
+	@POST
+	@Path("/excluirCategoria")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public void excluirCategoria(Long id) throws Exception {
+		CategoriaControle cc = new CategoriaControle();
+		cc.excluirCategoria(id);
+	}
 }

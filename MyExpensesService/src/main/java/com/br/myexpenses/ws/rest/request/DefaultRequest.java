@@ -2,13 +2,13 @@ package com.br.myexpenses.ws.rest.request;
 
 public class DefaultRequest {
 	
-	private Integer idUsuario;
+	private Long idUsuario;
 
-	public Integer getIdUsuario() {
+	public Long getIdUsuario() {
 		return idUsuario;
 	}
 
-	public void setIdUsuario(Integer idUsuario) {
+	public void setIdUsuario(Long idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 	

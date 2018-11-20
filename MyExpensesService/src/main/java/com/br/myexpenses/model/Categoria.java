@@ -7,12 +7,12 @@ import javax.persistence.*;
 public class Categoria {
 
 	@Column(name="usuario")
-	@ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Usuario usuario;
+	private Long usuario;
 	
 	@Id
 	@Column(name="id")
-	private int id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
 	
 	@Column(name="tipo")
 	private String tipo;
@@ -41,19 +41,19 @@ public class Categoria {
 		this.descricao = descricao;
 	}
 
-	public Usuario getUsuario() {
+	public Long getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Long usuario) {
 		this.usuario = usuario;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

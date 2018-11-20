@@ -8,9 +8,11 @@ import javax.persistence.*;
 
 import com.br.myexpenses.data.ConexaoDB;
 import com.br.myexpenses.model.Categoria;
+import com.br.myexpenses.utils.Utils;
+import com.br.myexpenses.ws.rest.request.CategoriaRequest;
 import com.br.myexpenses.ws.rest.response.CategoriaResponse;
 
-public class CategoriaControle implements DAO<Categoria> {
+public class CategoriaControle {
 	
 	private EntityManager manager;
 
@@ -18,50 +20,44 @@ public class CategoriaControle implements DAO<Categoria> {
 		manager = ConexaoDB.getEntityManager();
 	}
 
-	public boolean inserir(Categoria categoria) {
-		if (categoria != null) {
+	public CategoriaResponse inserirCategoria(CategoriaRequest request) {
+		CategoriaResponse cr = new CategoriaResponse();
+		if (this.getCategoriaExistente(request.getTipoCategoria())) {
+			Categoria c = new Categoria();
+			c.setTipo(request.getTipoCategoria());
+			c.setDescricao(request.getDescricao());
+			c.setUsuario(request.getIdUsuario());
+			
 			manager.getTransaction().begin();
-			manager.persist(categoria);
+			manager.persist(c);
 			manager.getTransaction().commit();			
-			return true;
+		} else {
+			cr.setCategoriaExistente(Boolean.TRUE);
 		}
-		return false;
+		
+		return cr;
 	}
 
-	public boolean atualizar(Categoria categoria, int id) throws Exception {
-		if (categoria != null) {
-			Categoria c = buscar(id);
-			c.setTipo(categoria.getTipo());
-			manager.getTransaction().begin();
-			manager.merge(c);
-			manager.getTransaction().commit();
-			return true;
-		}
-		return false;
+	public void atualizarCategoria(CategoriaRequest request) throws Exception {
+		Categoria c = new Categoria();
+		c.setId(request.getId());
+		c.setTipo(request.getTipoCategoria());
+		c.setDescricao(request.getDescricao());
+		c.setUsuario(request.getIdUsuario());
+		
+		manager.getTransaction().begin();
+		manager.merge(c);
+		manager.getTransaction().commit();
 	}
 
-	public boolean excluir(int id) throws Exception {
-		Categoria categoria = buscar(id);
-		if (categoria != null) {
-			manager.getTransaction().begin();
-			manager.remove(categoria);
-			manager.getTransaction().commit();
-			return true;
-		}
-		return false;
+	public void excluirCategoria(Long id) throws Exception {
+		Categoria categoria = this.manager.find(Categoria.class, id);
+		manager.getTransaction().begin();
+		manager.remove(categoria);
+		manager.getTransaction().commit();
 	}
 
-	public Categoria buscar(int id) {
-		return manager.find(Categoria.class, id);
-	}
-
-	public java.util.List<Categoria> listar() {
-		TypedQuery<Categoria> query = manager.createQuery(
-				"select new Categoria(c.categoria) from Categoria c", Categoria.class);
-		return query.getResultList();
-	}
-	
-	public List<CategoriaResponse> getCategorias(Integer idUsuario) {
+	public List<CategoriaResponse> getCategorias(Long idUsuario) {
 		StringJoiner sql = new StringJoiner("\n");
 		sql
 		.add(" SELECT c.id,       			 ")
@@ -87,5 +83,18 @@ public class CategoriaControle implements DAO<Categoria> {
 		}
 		
 		return list;
+	}
+	
+	private Boolean getCategoriaExistente(String tipo) {
+		StringJoiner sql = new StringJoiner("\n");
+		sql
+		.add(" SELECT 1 	         	 ")
+		.add(" FROM categoria c 			 ")
+		.add(" WHERE UPPER(c.tipo) = :pTipo ");
+		
+		Query query = this.manager.createNativeQuery(sql.toString());
+		query.setParameter("pTipo", tipo.toUpperCase());
+		
+		return Utils.listEmpty(query.getResultList());
 	}
 }
