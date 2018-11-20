@@ -3,10 +3,11 @@ package com.br.myexpenses.model;
 import javax.persistence.*;
 
 @Entity
+@IdClass(PK_Categoria.class)
 @Table(name="categoria")
 public class Categoria {
 
-		
+	@Id	
 	@Column(name="usuario")
 	private int usuario;
 	@Id
