@@ -1,7 +1,6 @@
 package com.br.myexpenses.model;
 
 import java.sql.Date;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,8 +8,7 @@ import javax.persistence.*;
 public class Despesa {
 	
 	
-	@Column(name="usuario")
-	@ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@Column(name="usuario")	
 	private Usuario usuario;
 	
 	@Id
