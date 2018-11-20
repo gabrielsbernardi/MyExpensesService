@@ -2,13 +2,56 @@ package com.br.myexpenses.model;
 
 import java.util.Date;
 
-public class Credito {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
-	private String descricao;
-	private Double valor;
-	private Date data;
+@Entity
+@Table(name="credito")
+public class Credito {
+	
+	
+	@Column(name="usuario")
+	private Integer usuario;
+	
+	@Id
+	@GeneratedValue
+	@Column(name="id")
+	private Long id;
+	
+	
+	@Column(name="numParcelas")
 	private Integer numParcelas;
 	
+	@Column(name="descricao", length=150)
+	private String descricao;
+	
+	@Column(name="valor")
+	private Double valor;
+	
+	@Column(name="data")
+	private Date data;
+	
+	
+	public int getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(int usuario) {
+		this.usuario = usuario;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getDescricao() {
 		return descricao;
 	}
