@@ -1,7 +1,5 @@
 package com.br.myexpenses.ws.rest.service;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;

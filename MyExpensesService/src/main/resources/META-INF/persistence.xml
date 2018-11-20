@@ -7,16 +7,17 @@
 	<persistence-unit name="myexpenses" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>com.br.myexpenses.model.Categoria</class>
+		<class>com.br.myexpenses.model.Usuario</class>
 		
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/myexpenses"/>
+			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5433/myexpenses"/>
 			<property name="hibernate.connection.username" value="postgres"/>
-			<property name="hibernate.connection.password" value="masterkey"/>
+			<property name="hibernate.connection.password" value="gabrielpgadmin2018"/>
 			
 					
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="true" />
 		</properties>
 	

@@ -72,6 +72,8 @@ public class CategoriaControle implements DAO<Categoria> {
 		
 		Query query = this.manager.createNativeQuery(sql.toString());
 		query.setParameter("pIdUsuario", idUsuario);
+		
+		@SuppressWarnings("unchecked")
 		List<Object[]> results = query.getResultList();
 		
 		CategoriaResponse c = null;

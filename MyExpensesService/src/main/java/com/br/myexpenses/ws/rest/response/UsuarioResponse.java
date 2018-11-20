@@ -5,6 +5,7 @@ public class UsuarioResponse extends DefaultResponse {
 	private Integer id;
 	private Boolean usuarioValido;
 	private String nome;
+	private Boolean usuarioExistente;
 
 	public Integer getId() {
 		return id;
@@ -28,6 +29,14 @@ public class UsuarioResponse extends DefaultResponse {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Boolean getUsuarioExistente() {
+		return usuarioExistente;
+	}
+
+	public void setUsuarioExistente(Boolean usuarioExistente) {
+		this.usuarioExistente = usuarioExistente;
 	}
 	
 }

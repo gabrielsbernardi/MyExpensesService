@@ -7,28 +7,24 @@ import javax.persistence.*;
 @Table(name="categoria")
 public class Categoria {
 
+<<<<<<< HEAD
 	@Id	
 	@Column(name="usuario")
 	private int usuario;
+=======
+>>>>>>> Login
 	@Id
 	@Column(name="id")
-	private int id;
+	private Integer id;
+	
+	@Column(name="usuario")
+	private Integer usuario;
+	
 	@Column(name="tipo")
 	private String tipo;
+	
 	@Column(name="descricao")
 	private String descricao;
-		
-	
-	public Categoria() {
-		
-	}
-	
-	public Categoria(int usuario, int id, String tipo, String descricao) {
-		this.usuario = usuario;
-		this.id = id;
-		this.tipo = tipo;
-		this.descricao = descricao;
-	}
 
 	public String getTipo() {
 		return tipo;
