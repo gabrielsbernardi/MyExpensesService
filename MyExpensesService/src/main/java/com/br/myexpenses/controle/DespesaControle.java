@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 import com.br.myexpenses.data.ConexaoDB;
 import com.br.myexpenses.model.Despesa;
+import com.br.myexpenses.ws.rest.request.DespesaRequest;
+import com.br.myexpenses.ws.rest.response.DespesaResponse;
 
 public class DespesaControle {
 
@@ -13,14 +15,21 @@ public class DespesaControle {
 		manager = ConexaoDB.getEntityManager();
 	}
 	
-	public boolean inserir(Despesa despesa) {
-		if (despesa != null) {
-			manager.getTransaction().begin();
-			manager.persist(despesa);
-			manager.getTransaction().commit();			
-			return true;
-		}
-		return false;
+	public DespesaResponse inserir(DespesaRequest request) {
+		
+		DespesaResponse dr = new DespesaResponse();
+		Despesa d = new Despesa();
+		d.setUsuario(request.getUsuario());
+		d.setParcela(request.getParcela());
+		d.setLocalCompra(request.getLocalCompra());
+		d.setDescricao(request.getDescricao());
+		d.setDataCompra(request.getDataCompra());
+		d.setCategoria(request.getCategoria());
+		d.setValor(request.getValor());		
+		manager.getTransaction().begin();
+		manager.persist(d);
+		manager.getTransaction().commit();			
+		return dr;			
 	}
 	
 	public boolean atualizar(Despesa despesa, int id) throws Exception {
