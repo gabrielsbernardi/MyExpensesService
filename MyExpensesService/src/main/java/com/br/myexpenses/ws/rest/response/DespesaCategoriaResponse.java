@@ -2,14 +2,14 @@ package com.br.myexpenses.ws.rest.response;
 
 public class DespesaCategoriaResponse {
 	
-	private Integer id;
+	private Long id;
 	private String tipoCategoria;
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

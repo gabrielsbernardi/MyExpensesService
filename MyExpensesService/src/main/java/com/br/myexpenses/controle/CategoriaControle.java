@@ -60,10 +60,14 @@ public class CategoriaControle {
 	public CategoriaResponse excluirCategoria(Long id) {
 		CategoriaResponse cr = new CategoriaResponse();
 		try {
-			Categoria categoria = this.manager.find(Categoria.class, id.intValue());
-			manager.getTransaction().begin();
-			manager.remove(categoria);
-			manager.getTransaction().commit();
+			if (this.possuiDespesa(id)) {
+				cr.setPossuiDespesa(Boolean.TRUE);
+			} else {
+				Categoria categoria = this.manager.find(Categoria.class, id);
+				manager.getTransaction().begin();
+				manager.remove(categoria);
+				manager.getTransaction().commit();
+			}
 		} catch (Exception e) {
 			cr.setIsException(Boolean.TRUE);
 			cr.setMessage(e.getMessage());
@@ -71,6 +75,19 @@ public class CategoriaControle {
 		return cr;
 	}
 
+	private Boolean possuiDespesa(Long idCategoria) {
+		StringJoiner sql = new StringJoiner("\n");
+		sql
+		.add(" SELECT 1 	         	 		 ")
+		.add(" FROM despesa d 			 		 ")
+		.add(" WHERE d.categoria = :pIdCategoria ");
+		
+		Query query = this.manager.createNativeQuery(sql.toString());
+		query.setParameter("pIdCategoria", idCategoria);
+		
+		return !Utils.listEmpty(query.getResultList());
+	}
+	
 	public List<CategoriaResponse> getCategorias(Long idUsuario) {
 		StringJoiner sql = new StringJoiner("\n");
 		sql
@@ -78,7 +95,8 @@ public class CategoriaControle {
 		.add("        c.tipo,     			 ")
 		.add("        c.descricao 			 ")
 		.add(" FROM categoria c   			 ")
-		.add(" WHERE c.usuario = :pIdUsuario ");
+		.add(" WHERE c.usuario = :pIdUsuario ")
+		.add(" ORDER BY c.tipo				 ");
 		
 		Query query = this.manager.createNativeQuery(sql.toString());
 		query.setParameter("pIdUsuario", idUsuario);

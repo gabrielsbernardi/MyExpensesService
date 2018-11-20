@@ -8,8 +8,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.br.myexpenses.controle.CreditoControle;
+import com.br.myexpenses.controle.DespesaControle;
 import com.br.myexpenses.ws.rest.request.CreditoRequest;
+import com.br.myexpenses.ws.rest.request.DespesaRequest;
 import com.br.myexpenses.ws.rest.response.CreditoResponse;
+import com.br.myexpenses.ws.rest.response.DespesaCategoriaResponse;
+import com.br.myexpenses.ws.rest.response.DespesaResponse;
 
 @Path("/creditoService")
 public class CreditoService {
@@ -40,4 +45,31 @@ public class CreditoService {
 //		
 		return null;
 	}
+	
+	/*@POST
+	@Path("/getCreditos")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public List<DespesaResponse> getCreditos(CreditoRequest request) throws Exception {
+		CreditoControle cc = new CreditoControle();
+		return dc.getDespesas(request.getIdUsuario());
+	}
+	
+	@POST
+	@Path("/inserirCredito")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public DespesaResponse inserirCredito(DespesaRequest request) throws Exception {
+		DespesaControle dc = new DespesaControle();
+		return dc.inserirDespesa(request);
+	}
+	
+	@POST
+	@Path("/excluirCredito")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public DespesaResponse excluirCredito(Long id) throws Exception {
+		DespesaControle dc = new DespesaControle();
+		return dc.excluirDespesa(id);
+	}*/
 }

@@ -21,8 +21,8 @@ public class Credito {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="numParcelas")
-	private Integer numParcelas;
+	@Column(name="parcela")
+	private Integer parcela;
 	
 	@Column(name="descricao", length=150)
 	private String descricao;
@@ -30,7 +30,7 @@ public class Credito {
 	@Column(name="valor")
 	private Double valor;
 	
-	@Column(name="data")
+	@Column(name="data_credito")
 	private Date data;
 	
 	public Long getUsuario() {
@@ -73,12 +73,12 @@ public class Credito {
 		this.data = data;
 	}
 	
-	public Integer getNumParcelas() {
-		return numParcelas;
+	public Integer getParcela() {
+		return parcela;
 	}
 	
-	public void setNumParcelas(Integer numParcelas) {
-		this.numParcelas = numParcelas;
+	public void setParcela(Integer parcela) {
+		this.parcela = parcela;
 	}
 	
 }

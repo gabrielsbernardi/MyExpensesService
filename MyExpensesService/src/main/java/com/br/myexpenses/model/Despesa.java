@@ -19,13 +19,13 @@ public class Despesa {
 	@Column(name="parcela")
 	private Integer parcela;
 	
-	@Column(name="localCompra", length=150)
+	@Column(name="local_compra", length=150)
 	private String localCompra;
 	
 	@Column(name="descricao", length=150)
 	private String descricao;
 	
-	@Column(name="dataCompra")
+	@Column(name="data_compra")
 	private Date dataCompra;
 	
 	@Column(name="categoria")

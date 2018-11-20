@@ -1,5 +1,7 @@
 package com.br.myexpenses.utils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
 
 public class Utils {
@@ -10,5 +12,12 @@ public class Utils {
 	
 	public static Boolean stringIsNull(String value) {
 		return value == null || "".equals(value.trim());
+	}
+	
+	public static Double duasCasasDecimais(Double valor) {
+		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+	    symbols.setDecimalSeparator('.');
+	    DecimalFormat format = new DecimalFormat("#.##", symbols);
+	    return Double.valueOf((format.format(valor)));
 	}
 }

@@ -26,7 +26,7 @@ public class CreditoControle {
 		Credito c = new Credito();
 		c.setUsuario(request.getUsuario());
 		c.setDescricao(request.getDescricao());
-		c.setNumParcelas(request.getNumParcelas());
+		//c.setParcelas(request.getNumParcelas());
 		c.setData(request.getData());
 		c.setValor(request.getValor());
 		manager.getTransaction().begin();
@@ -40,7 +40,7 @@ public class CreditoControle {
 			c.setId(request.getId());
 			c.setUsuario(request.getUsuario());
 			c.setDescricao(request.getDescricao());
-			c.setNumParcelas(request.getNumParcelas());
+			//c.setNumParcelas(request.getNumParcelas());
 			c.setData(request.getData());
 			c.setValor(request.getValor());
 			
@@ -78,7 +78,7 @@ public class CreditoControle {
 		List<CreditoResponse> list = new ArrayList<CreditoResponse>();
 		for (Object[] o : results) {
 			c = new CreditoResponse();
-			c.setId((Integer) o[0]);
+			c.setId(((Integer) o[0]).longValue());
 			c.setNumParcela((Integer) o[1]);
 			c.setDescricao((String) o[2]);
 			c.setValor((Double) o[3]);

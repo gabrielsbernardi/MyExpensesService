@@ -1,6 +1,6 @@
 package com.br.myexpenses.model;
 
-import java.sql.Date;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +17,7 @@ public class Lancamento {
 	private Long usuario;
 	
 	@Id
-	@Column(name="idlancamento")
+	@Column(name="id_lancamento")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idLancamento;
 	

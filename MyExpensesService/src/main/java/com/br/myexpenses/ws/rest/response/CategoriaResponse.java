@@ -5,6 +5,7 @@ public class CategoriaResponse extends DefaultResponse {
 	private String tipoCategoria;
 	private String descricao;
 	private Boolean categoriaExistente;
+	private Boolean possuiDespesa;
 	
 	public String getTipoCategoria() {
 		return tipoCategoria;
@@ -28,6 +29,14 @@ public class CategoriaResponse extends DefaultResponse {
 
 	public void setCategoriaExistente(Boolean categoriaExistente) {
 		this.categoriaExistente = categoriaExistente;
+	}
+
+	public Boolean getPossuiDespesa() {
+		return possuiDespesa;
+	}
+
+	public void setPossuiDespesa(Boolean possuiDespesa) {
+		this.possuiDespesa = possuiDespesa;
 	}
 	
 }
