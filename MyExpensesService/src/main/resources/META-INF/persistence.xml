@@ -7,6 +7,9 @@
 	<persistence-unit name="myexpenses" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>com.br.myexpenses.model.Categoria</class>
+		<class>com.br.myexpenses.model.Credito</class>
+		<class>com.br.myexpenses.model.Despesa</class>
+		<class>com.br.myexpenses.model.Lancamento</class>
 		<class>com.br.myexpenses.model.Usuario</class>
 		
 		<properties>

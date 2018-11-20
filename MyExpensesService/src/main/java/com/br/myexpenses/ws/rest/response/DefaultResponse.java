@@ -2,7 +2,7 @@ package com.br.myexpenses.ws.rest.response;
 
 public class DefaultResponse {
 	
-	private Integer id;
+	private Long id;
 	private Boolean isException;
 	private String message;
 	
@@ -10,11 +10,11 @@ public class DefaultResponse {
 		this.isException = Boolean.FALSE;
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

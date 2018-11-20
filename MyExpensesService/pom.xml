@@ -40,8 +40,6 @@
 		    <artifactId>jdbi3-postgres</artifactId>
 		    <version>3.5.1</version>
 		</dependency>
-
-
 				
 		<!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
 		<dependency>
@@ -56,7 +54,6 @@
 		    <artifactId>hibernate-entitymanager</artifactId>
 		    <version>5.4.0.CR1</version>
 		</dependency>
-
 		
 		<dependency>
 		     <groupId>org.hibernate</groupId>

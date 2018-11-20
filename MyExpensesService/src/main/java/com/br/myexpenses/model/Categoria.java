@@ -20,11 +20,6 @@ public class Categoria {
 	@Column(name="descricao")
 	private String descricao;
 		
-	
-	public Categoria() {
-		
-	}
-
 	public String getTipo() {
 		return tipo;
 	}

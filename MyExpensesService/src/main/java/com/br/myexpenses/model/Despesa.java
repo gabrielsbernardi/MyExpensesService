@@ -9,11 +9,11 @@ public class Despesa {
 	
 	
 	@Column(name="usuario")	
-	private Usuario usuario;
+	private Long usuario;
 	
 	@Id
-	@GeneratedValue
 	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 		
 	@Column(name="parcela")
@@ -29,17 +29,16 @@ public class Despesa {
 	private Date dataCompra;
 	
 	@Column(name="categoria")
-	@ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Categoria categoria;
+	private Long categoria;
 	
 	@Column(name="valor")
 	private double valor;
 
-	public Usuario getUsuario() {
+	public Long getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Long usuario) {
 		this.usuario = usuario;
 	}
 
@@ -83,11 +82,11 @@ public class Despesa {
 		this.dataCompra = dataCompra;
 	}
 
-	public Categoria getCategoria() {
+	public Long getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(Categoria categoria) {
+	public void setCategoria(Long categoria) {
 		this.categoria = categoria;
 	}
 

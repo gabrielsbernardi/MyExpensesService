@@ -4,6 +4,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,13 +14,12 @@ public class Credito {
 	
 	
 	@Column(name="usuario")
-	private Usuario usuario;
+	private Long usuario;
 	
 	@Id
-	@GeneratedValue
 	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
 	
 	@Column(name="numParcelas")
 	private Integer numParcelas;
@@ -33,12 +33,11 @@ public class Credito {
 	@Column(name="data")
 	private Date data;
 	
-	
-	public Usuario getUsuario() {
+	public Long getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Long usuario) {
 		this.usuario = usuario;
 	}
 

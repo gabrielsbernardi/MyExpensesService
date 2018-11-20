@@ -46,7 +46,7 @@ public class UsuarioControle {
 				
 				if (request.getSenha().equals(EncriptaDecriptaAES.decrypt((byte[]) o[2]))) {
 					response.setUsuarioValido(Boolean.TRUE);
-					response.setId((Integer) o[0]);
+					response.setId(((Integer) o[0]).longValue());
 					response.setNome((String) o[1]);
 				} else {
 					response.setUsuarioValido(Boolean.FALSE);

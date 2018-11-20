@@ -38,23 +38,37 @@ public class CategoriaControle {
 		return cr;
 	}
 
-	public void atualizarCategoria(CategoriaRequest request) throws Exception {
-		Categoria c = new Categoria();
-		c.setId(request.getId());
-		c.setTipo(request.getTipoCategoria());
-		c.setDescricao(request.getDescricao());
-		c.setUsuario(request.getIdUsuario());
-		
-		manager.getTransaction().begin();
-		manager.merge(c);
-		manager.getTransaction().commit();
+	public CategoriaResponse atualizarCategoria(CategoriaRequest request) {
+		CategoriaResponse cr = new CategoriaResponse();
+		try {
+			Categoria c = new Categoria();
+			c.setId(request.getId());
+			c.setTipo(request.getTipoCategoria());
+			c.setDescricao(request.getDescricao());
+			c.setUsuario(request.getIdUsuario());
+			
+			manager.getTransaction().begin();
+			manager.merge(c);
+			manager.getTransaction().commit();
+		} catch (Exception e) {
+			cr.setIsException(Boolean.TRUE);
+			cr.setMessage(e.getMessage());
+		}
+		return cr;
 	}
 
-	public void excluirCategoria(Long id) throws Exception {
-		Categoria categoria = this.manager.find(Categoria.class, id);
-		manager.getTransaction().begin();
-		manager.remove(categoria);
-		manager.getTransaction().commit();
+	public CategoriaResponse excluirCategoria(Long id) {
+		CategoriaResponse cr = new CategoriaResponse();
+		try {
+			Categoria categoria = this.manager.find(Categoria.class, id.intValue());
+			manager.getTransaction().begin();
+			manager.remove(categoria);
+			manager.getTransaction().commit();
+		} catch (Exception e) {
+			cr.setIsException(Boolean.TRUE);
+			cr.setMessage(e.getMessage());
+		}
+		return cr;
 	}
 
 	public List<CategoriaResponse> getCategorias(Long idUsuario) {
@@ -76,7 +90,7 @@ public class CategoriaControle {
 		List<CategoriaResponse> list = new ArrayList<CategoriaResponse>();
 		for (Object[] o : results) {
 			c = new CategoriaResponse();
-			c.setId((Integer) o[0]);
+			c.setId(((Integer) o[0]).longValue());
 			c.setTipoCategoria((String) o[1]);
 			c.setDescricao((String) o[2]);
 			list.add(c);

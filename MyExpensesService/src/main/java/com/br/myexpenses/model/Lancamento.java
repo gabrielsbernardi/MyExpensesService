@@ -3,6 +3,8 @@ package com.br.myexpenses.model;
 import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,17 +14,18 @@ import javax.persistence.Table;
 public class Lancamento {
 
 	@Column(name="usuario")	
-	private Usuario usuario;
+	private Long usuario;
 	
 	@Id
 	@Column(name="idlancamento")
-	private Integer idLancamento;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long idLancamento;
 	
 	@Column(name="credito")
-	private Credito credito;
+	private Long credito;
 	
 	@Column(name="despesa")
-	private Despesa despesa;
+	private Long despesa;
 	
 	@Column(name="valor")
 	private double valor;
@@ -30,35 +33,35 @@ public class Lancamento {
 	@Column(name="data")
 	private Date data;
 
-	public Usuario getUsuario() {
+	public Long getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Long usuario) {
 		this.usuario = usuario;
 	}
 
-	public Integer getIdLancamento() {
+	public Long getIdLancamento() {
 		return idLancamento;
 	}
 
-	public void setIdLancamento(Integer idLancamento) {
+	public void setIdLancamento(Long idLancamento) {
 		this.idLancamento = idLancamento;
 	}
 
-	public Credito getCredito() {
+	public Long getCredito() {
 		return credito;
 	}
 
-	public void setCredito(Credito credito) {
+	public void setCredito(Long credito) {
 		this.credito = credito;
 	}
 
-	public Despesa getDespesa() {
+	public Long getDespesa() {
 		return despesa;
 	}
 
-	public void setDespesa(Despesa despesa) {
+	public void setDespesa(Long despesa) {
 		this.despesa = despesa;
 	}
 

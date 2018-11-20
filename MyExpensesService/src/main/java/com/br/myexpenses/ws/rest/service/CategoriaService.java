@@ -37,17 +37,17 @@ public class CategoriaService {
 	@Path("/atualizarCategoria")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public void atualizarCategoria(CategoriaRequest request) throws Exception {
+	public CategoriaResponse atualizarCategoria(CategoriaRequest request) throws Exception {
 		CategoriaControle cc = new CategoriaControle();
-		cc.atualizarCategoria(request);
+		return cc.atualizarCategoria(request);
 	}
 	
 	@POST
 	@Path("/excluirCategoria")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public void excluirCategoria(Long id) throws Exception {
+	public CategoriaResponse excluirCategoria(Long id) throws Exception {
 		CategoriaControle cc = new CategoriaControle();
-		cc.excluirCategoria(id);
+		return cc.excluirCategoria(id);
 	}
 }
