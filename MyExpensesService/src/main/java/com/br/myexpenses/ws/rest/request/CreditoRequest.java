@@ -7,7 +7,7 @@ public class CreditoRequest extends DefaultRequest {
 	
 	private Long usuario;
 	private Long id;
-	private Integer numParcelas;
+	private Integer parcela;
 	private String descricao;
 	private Double valor;
 	private Date data;
@@ -24,11 +24,11 @@ public class CreditoRequest extends DefaultRequest {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getNumParcelas() {
-		return numParcelas;
+	public Integer getParcela() {
+		return parcela;
 	}
-	public void setNumParcelas(Integer numParcelas) {
-		this.numParcelas = numParcelas;
+	public void setParcela(Integer parcela) {
+		this.parcela = parcela;
 	}
 	public String getDescricao() {
 		return descricao;

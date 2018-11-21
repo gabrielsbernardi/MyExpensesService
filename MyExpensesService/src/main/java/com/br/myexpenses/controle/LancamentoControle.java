@@ -1,9 +1,7 @@
 package com.br.myexpenses.controle;
 
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.StringJoiner;
 
 import javax.persistence.EntityManager;
@@ -56,6 +54,7 @@ public class LancamentoControle {
 
 	public void atualizarLancamentos(Despesa d) {
 		this.excluirLancamento(d);
+		this.gerarLancamentos(d);
 	}
 	
 	public void excluirLancamento(Despesa d) {
@@ -74,52 +73,52 @@ public class LancamentoControle {
 	
 	//----------------------------------------------- CRÉDITO -----------------------------------------------
 	
-		public void gerarLancamentos(Credito c) {
-			Double valor = 0.0;
-			if (c.getValor() != 0) {
-				valor = Utils.duasCasasDecimais(c.getValor() / c.getParcela());
-			}
+	public void gerarLancamentos(Credito c) {
+		Double valor = 0.0;
+		if (c.getValor() != 0) {
+			valor = Utils.duasCasasDecimais(c.getValor() / c.getParcela());
+		}
+		
+		Lancamento l = null;
+		Date dataAtual = c.getData();
+		for (int i = 0; i < c.getParcela(); i++) {
+			l = new Lancamento();
+			l.setCredito(c.getId());
+			l.setUsuario(c.getUsuario());
+			l.setValor(valor);
 			
-			List<Lancamento> lancamentos = new ArrayList<Lancamento>();
-			Lancamento l = null;
-			Date dataAtual = c.getData();
-			for (int i = 0; i < c.getParcela(); i++) {
-				l = new Lancamento();
-				l.setDespesa(c.getId());
-				l.setUsuario(c.getUsuario());
-				l.setValor(valor);
-				
-				if (i > 0) {
-					l.setData(this.getProximoMes(dataAtual));
-				} else {
-					l.setData(dataAtual);
-				}
-				
-				lancamentos.add(l);
-				dataAtual = l.getData();
+			if (i > 0) {
+				l.setData(this.getProximoMes(dataAtual));
+			} else {
+				l.setData(dataAtual);
 			}
 			
 			manager.getTransaction().begin();
-			manager.persist(lancamentos);
+			manager.persist(l);
 			manager.getTransaction().commit();
-		}
-
-		public void atualizarLancamentos(Credito c) {
-			this.excluirLancamento(c);
-		}
-		
-		public void excluirLancamento(Credito c) {
-			StringJoiner sql = new StringJoiner("\n");
-			sql
-			.add(" DELETE FROM lancamento l		 ")
-			.add(" WHERE l.usuario = :pIdUsuario ")
-			.add(" AND l.credito = :pIdCredito ");
 			
-			Query query = this.manager.createNativeQuery(sql.toString());
-			query.setParameter("pIdusuario", c.getUsuario());
-			query.setParameter("pIdCredito", c.getId());
-			query.executeUpdate();
+			dataAtual = l.getData();
 		}
+	}
+
+	public void atualizarLancamentos(Credito c) {
+		this.excluirLancamento(c);
+		this.gerarLancamentos(c);
+	}
+	
+	public void excluirLancamento(Credito c) {
+		StringJoiner sql = new StringJoiner("\n");
+		sql
+		.add(" DELETE FROM lancamento l		 ")
+		.add(" WHERE l.credito = :pIdCredito ");
+		
+		Query query = this.manager.createNativeQuery(sql.toString());
+		query.setParameter("pIdCredito", c.getId());
+
+		this.manager.getTransaction().begin();
+		query.executeUpdate();
+		this.manager.getTransaction().commit();
+	}
 	
 	private Date getProximoMes(Date dataCompra) {
 		Calendar cal = Calendar.getInstance();

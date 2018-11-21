@@ -1,7 +1,5 @@
 package com.br.myexpenses.ws.rest.service;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -11,11 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.br.myexpenses.ws.rest.request.GastoRequest;
-import com.br.myexpenses.ws.rest.response.DespesaCategoriaResponse;
 import com.br.myexpenses.ws.rest.response.DespesaResponse;
 
-@Path("/gastoService")
-public class GastoService {
+@Path("/lancamentoService")
+public class LançamentoService {
 	
 	@POST
 	@Path("/getGastos")

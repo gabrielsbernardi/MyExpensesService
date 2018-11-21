@@ -92,8 +92,6 @@ public class DespesaControle {
 			dr.setMessage(e.getMessage());
 		}
 		
-		
-		
 		return dr;
 	}
 	

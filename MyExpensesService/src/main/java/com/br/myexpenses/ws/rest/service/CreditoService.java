@@ -13,7 +13,6 @@ import com.br.myexpenses.controle.DespesaControle;
 import com.br.myexpenses.ws.rest.request.CreditoRequest;
 import com.br.myexpenses.ws.rest.request.DespesaRequest;
 import com.br.myexpenses.ws.rest.response.CreditoResponse;
-import com.br.myexpenses.ws.rest.response.DespesaCategoriaResponse;
 import com.br.myexpenses.ws.rest.response.DespesaResponse;
 
 @Path("/creditoService")
@@ -24,52 +23,34 @@ public class CreditoService {
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<CreditoResponse> getCreditos(CreditoRequest request) throws Exception {
-		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT * FROM credito ");
-		sql.append(" WHERE usuario = '").append(request.getIdUsuario()).append("'");
-		
-//		Conexao con = new Conexao();
-//		CreditoResponse c = null;
-//		List<CreditoResponse> list = new ArrayList<CreditoResponse>();
-//		
-//		ResultSet consulta = con.executeQuery(sql.toString());
-//		while (consulta.next()) {
-//			c = new CreditoResponse();
-//			c.setId(consulta.getInt("id"));
-//			c.setDescricao(consulta.getString("descricao"));
-//			c.setData(consulta.getDate("data_credito"));
-//			c.setValor(consulta.getDouble("valor"));
-//			c.setNumParcela(consulta.getInt("parcela"));
-//			list.add(c);
-//		}
-//		
-		return null;
-	}
-	
-	/*@POST
-	@Path("/getCreditos")
-	@Consumes({MediaType.APPLICATION_JSON})
-	@Produces({MediaType.APPLICATION_JSON})
-	public List<DespesaResponse> getCreditos(CreditoRequest request) throws Exception {
 		CreditoControle cc = new CreditoControle();
-		return dc.getDespesas(request.getIdUsuario());
+		return cc.getCreditos(request.getIdUsuario());
 	}
 	
 	@POST
 	@Path("/inserirCredito")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public DespesaResponse inserirCredito(DespesaRequest request) throws Exception {
-		DespesaControle dc = new DespesaControle();
-		return dc.inserirDespesa(request);
+	public CreditoResponse inserirCredito(CreditoRequest request) throws Exception {
+		CreditoControle cc = new CreditoControle();
+		return cc.inserirCredito(request);
+	}
+	
+	@POST
+	@Path("/atualizarCredito")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public CreditoResponse atualizarCredito(CreditoRequest request) throws Exception {
+		CreditoControle dc = new CreditoControle();
+		return dc.atualizar(request);
 	}
 	
 	@POST
 	@Path("/excluirCredito")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public DespesaResponse excluirCredito(Long id) throws Exception {
-		DespesaControle dc = new DespesaControle();
-		return dc.excluirDespesa(id);
-	}*/
+	public CreditoResponse excluirCredito(Long id) throws Exception {
+		CreditoControle cc = new CreditoControle();
+		return cc.excluirCredito(id);
+	}
 }

@@ -1,6 +1,7 @@
 package com.br.myexpenses.controle;
 
-import java.sql.Date;
+import java.util.Date;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -21,52 +22,86 @@ public class CreditoControle {
 		manager = ConexaoDB.getEntityManager();
 	}
 	
-	public CreditoResponse inserir(CreditoRequest request) {
-		CreditoResponse crr = new CreditoResponse();
+	public CreditoResponse inserirCredito(CreditoRequest request) {
+		CreditoResponse cr = new CreditoResponse();
+		
 		Credito c = new Credito();
-		c.setUsuario(request.getUsuario());
+		c.setUsuario(request.getIdUsuario());
+		c.setParcela(request.getParcela());
 		c.setDescricao(request.getDescricao());
-		//c.setParcelas(request.getNumParcelas());
 		c.setData(request.getData());
 		c.setValor(request.getValor());
+		
 		manager.getTransaction().begin();
 		manager.persist(c);
-		manager.getTransaction().commit();
-		return crr;
+		manager.getTransaction().commit();		
+		
+		LancamentoControle lc = new LancamentoControle();
+		lc.gerarLancamentos(c);
+		
+		return cr;			
 	}
 	
-	public void atualizarCredito(CreditoRequest request) throws Exception {		
-			Credito c = new Credito();
-			c.setId(request.getId());
-			c.setUsuario(request.getUsuario());
+	public CreditoResponse atualizar(CreditoRequest request) throws Exception {
+		CreditoResponse cr = new CreditoResponse();
+		
+		Credito c = this.manager.find(Credito.class, request.getId());
+		Integer parcela = c.getParcela();
+		Date data = c.getData();
+		Double valor = c.getValor();
+		
+		try {
+			c.setParcela(request.getParcela());
 			c.setDescricao(request.getDescricao());
-			//c.setNumParcelas(request.getNumParcelas());
-			c.setData(request.getData());
+			c.setData(request.getData());			
 			c.setValor(request.getValor());
 			
 			manager.getTransaction().begin();
 			manager.merge(c);
 			manager.getTransaction().commit();
+		} catch (Exception e) {
+			cr.setIsException(Boolean.TRUE);
+			cr.setMessage(e.getMessage());
+		}
 		
+		if (parcela != c.getParcela() || data != c.getData() || valor != c.getValor()) {
+			LancamentoControle lc = new LancamentoControle();
+			lc.atualizarLancamentos(c);
+		}
+		
+		return cr;
 	}
 	
-	public void excluirCredito(long id) throws Exception {
-		Credito credito = this.manager.find(Credito.class, id);		
-		manager.getTransaction().begin();
-		manager.remove(credito);
-		manager.getTransaction().commit();		
+	public CreditoResponse excluirCredito(Long id) throws Exception {
+		CreditoResponse cr = new CreditoResponse();
+		try {
+			Credito c = this.manager.find(Credito.class, id);
+			
+			LancamentoControle lc = new LancamentoControle();
+			lc.excluirLancamento(c);
+			
+			manager.getTransaction().begin();
+			manager.remove(c);
+			manager.getTransaction().commit();
+		} catch (Exception e) {
+			cr.setIsException(Boolean.TRUE);
+			cr.setMessage(e.getMessage());
+		}
+		
+		return cr;
 	}
 	
 	public List<CreditoResponse> getCreditos(Long idUsuario){
 		StringJoiner sql = new StringJoiner("\n");
 		sql
-		.add(" SELECT C.ID,  		   ")
-		.add("        C.PARCELA,       ")
-		.add("        C.DESCRICAO,     ")
-		.add("        C.VALOR,  	   ")
-		.add("        C.DATA_CREDITO,  ")
-		.add(" FROM CREDITO C          ")
-		.add(" WHERE C.USUARIO = :pIdUsuario");
+		.add(" SELECT c.id,  		   		 ")
+		.add("        c.parcela,       		 ")
+		.add("        c.descricao,     		 ")
+		.add("        c.valor,  	   		 ")
+		.add("        c.data_credito   		 ")
+		.add(" FROM credito c          		 ")
+		.add(" WHERE c.usuario = :pIdUsuario ")
+		.add(" ORDER BY c.descricao 		 ");
 		
 		Query query = this.manager.createNativeQuery(sql.toString());
 		query.setParameter("pIdUsuario", idUsuario);
@@ -81,15 +116,12 @@ public class CreditoControle {
 			c.setId(((Integer) o[0]).longValue());
 			c.setNumParcela((Integer) o[1]);
 			c.setDescricao((String) o[2]);
-			c.setValor((Double) o[3]);
+			c.setValor(((BigDecimal) o[3]).doubleValue());
 			c.setData((Date) o[4]);
+			
+			list.add(c);
 		}
 		return list;
-	}
-	
-	
-	public Credito buscar(int id) {
-		return manager.find(Credito.class, id);
 	}
 	
 }

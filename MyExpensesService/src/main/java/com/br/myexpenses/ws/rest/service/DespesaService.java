@@ -44,6 +44,15 @@ public class DespesaService {
 	}
 	
 	@POST
+	@Path("/atualizarDespesa")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public DespesaResponse atualizarDespesa(DespesaRequest request) throws Exception {
+		DespesaControle dc = new DespesaControle();
+		return dc.atualizar(request);
+	}
+	
+	@POST
 	@Path("/excluirDespesa")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
