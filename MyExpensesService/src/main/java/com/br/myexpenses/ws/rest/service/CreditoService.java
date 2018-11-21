@@ -9,11 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.br.myexpenses.controle.CreditoControle;
-import com.br.myexpenses.controle.DespesaControle;
 import com.br.myexpenses.ws.rest.request.CreditoRequest;
-import com.br.myexpenses.ws.rest.request.DespesaRequest;
 import com.br.myexpenses.ws.rest.response.CreditoResponse;
-import com.br.myexpenses.ws.rest.response.DespesaResponse;
 
 @Path("/creditoService")
 public class CreditoService {

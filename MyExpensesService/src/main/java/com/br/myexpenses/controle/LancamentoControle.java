@@ -1,7 +1,13 @@
 package com.br.myexpenses.controle;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.StringJoiner;
 
 import javax.persistence.EntityManager;
@@ -11,7 +17,13 @@ import com.br.myexpenses.data.ConexaoDB;
 import com.br.myexpenses.model.Credito;
 import com.br.myexpenses.model.Despesa;
 import com.br.myexpenses.model.Lancamento;
+import com.br.myexpenses.to.TOLancamentoCredito;
+import com.br.myexpenses.to.TOLancamentoDespesa;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import com.br.myexpenses.utils.Utils;
+import com.br.myexpenses.ws.rest.request.LancamentoRequest;
+import com.br.myexpenses.ws.rest.response.LancamentoResponse;
 
 public class LancamentoControle {
 
@@ -19,6 +31,167 @@ public class LancamentoControle {
 	
 	public LancamentoControle() {
 		manager = ConexaoDB.getEntityManager();
+	}
+	
+	public List<LancamentoResponse> getLancamentos(LancamentoRequest request) {
+		List<LancamentoResponse> listReponse = new ArrayList<LancamentoResponse>();
+		Map<String, TOLancamentoCredito> mapCreditos = this.getLancamentosCredito(request.getIdUsuario());
+		Map<String, TOLancamentoDespesa> mapDespesas = this.getLancamentosDespesas(request.getIdUsuario());
+
+		Boolean percorrerCreditos = mapCreditos.size() <= mapDespesas.size();
+		LancamentoResponse lr = null;
+		if (percorrerCreditos) {
+			for (Map.Entry<String, TOLancamentoCredito> to : mapCreditos.entrySet()) {
+			    if (mapDespesas.containsKey(to.getKey())) {
+			    	TOLancamentoDespesa toDespesa = mapDespesas.get(to.getKey());
+			    	
+			    	lr = new LancamentoResponse();
+			    	lr.setData(to.getValue().getData());
+			    	lr.setDataCompleta(this.getDateCompleta(lr.getData()));
+			    	lr.setValor(Utils.duasCasasDecimais(to.getValue().getValor() - toDespesa.getValor()));
+			    	lr.setTotalCredito(to.getValue().getValor());
+			    	lr.setTotalDespesa(toDespesa.getValor());
+			    	listReponse.add(lr);
+			    	
+			    	mapDespesas.remove(to.getKey());
+			    } else {
+			    	lr = new LancamentoResponse();
+			    	lr.setData(to.getValue().getData());
+			    	lr.setDataCompleta(this.getDateCompleta(lr.getData()));
+			    	lr.setValor(Utils.duasCasasDecimais(to.getValue().getValor()));
+			    	lr.setTotalCredito(to.getValue().getValor());
+			    	lr.setTotalDespesa(0.00);
+			    	listReponse.add(lr);
+			    }
+			}
+		} else {
+			for (Map.Entry<String, TOLancamentoDespesa> to : mapDespesas.entrySet()) {
+			    if (mapCreditos.containsKey(to.getKey())) {
+			    	TOLancamentoCredito toCredito = mapCreditos.get(to.getKey());
+			    	
+			    	lr = new LancamentoResponse();
+			    	lr.setData(to.getValue().getData());
+			    	lr.setDataCompleta(this.getDateCompleta(lr.getData()));
+			    	lr.setValor(Utils.duasCasasDecimais(toCredito.getValor() - to.getValue().getValor()));
+			    	lr.setTotalCredito(toCredito.getValor());
+			    	lr.setTotalDespesa(to.getValue().getValor());
+			    	listReponse.add(lr);
+			    	
+			    	mapCreditos.remove(to.getKey());
+			    } else {
+			    	lr = new LancamentoResponse();
+			    	lr.setData(to.getValue().getData());
+			    	lr.setDataCompleta(this.getDateCompleta(lr.getData()));
+			    	lr.setValor(Utils.duasCasasDecimais(0.0 - to.getValue().getValor()));
+			    	lr.setTotalCredito(0.00);
+			    	lr.setTotalDespesa(to.getValue().getValor());
+			    	listReponse.add(lr);
+			    }
+			}
+		}
+		
+		if (percorrerCreditos) {
+			if (!mapDespesas.isEmpty()) {
+				for (Map.Entry<String, TOLancamentoDespesa> to : mapDespesas.entrySet()) {
+					lr = new LancamentoResponse();
+			    	lr.setData(to.getValue().getData());
+			    	lr.setDataCompleta(this.getDateCompleta(lr.getData()));
+			    	lr.setValor(Utils.duasCasasDecimais(0.0 - to.getValue().getValor()));
+			    	lr.setTotalCredito(0.00);
+			    	lr.setTotalDespesa(to.getValue().getValor());
+			    	listReponse.add(lr);
+				}
+			}
+		} else {
+			if (!mapCreditos.isEmpty()) {
+				for (Map.Entry<String, TOLancamentoCredito> to : mapCreditos.entrySet()) {
+					lr = new LancamentoResponse();
+			    	lr.setData(to.getValue().getData());
+			    	lr.setDataCompleta(this.getDateCompleta(lr.getData()));
+			    	lr.setValor(Utils.duasCasasDecimais(to.getValue().getValor()));
+			    	lr.setTotalCredito(to.getValue().getValor());
+			    	lr.setTotalDespesa(0.00);
+			    	listReponse.add(lr);
+				}
+			}
+		}
+		
+		Collections.sort(listReponse);
+		
+		return listReponse;
+	}
+	
+	private Date getDateCompleta(String data) {
+		try {
+			return new SimpleDateFormat("dd/MM/yyyy").parse("01/" + data);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private Map<String, TOLancamentoCredito> getLancamentosCredito(Long idUsuario) {
+		StringJoiner sql = new StringJoiner("\n");
+		
+		sql
+		.add(" SELECT TO_CHAR(l.data, 'MM/yyyy') AS dat, ")
+		.add(" 	   	  SUM(l.valor) AS valor              ")
+		.add(" FROM lancamento l                         ")
+		.add(" WHERE l.usuario = :pIdUsuario             ")
+		.add(" AND l.despesa IS NULL                     ")
+		.add(" GROUP BY dat                              ")
+		.add(" ORDER BY dat                              ");
+		
+		Query query = this.manager.createNativeQuery(sql.toString());
+		query.setParameter("pIdUsuario", idUsuario);
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> results = query.getResultList();
+		
+		TOLancamentoCredito to = null;
+		Map<String, TOLancamentoCredito> mapCreditos = new HashMap<String, TOLancamentoCredito>();
+		for (Object[] o : results) {
+			to = new TOLancamentoCredito();
+			to.setData((String) o[0]);
+			to.setValor(((BigDecimal) o[1]).doubleValue());
+			
+			mapCreditos.put(to.getData(), to);
+		}
+		return mapCreditos;
+	}
+	
+	private Map<String, TOLancamentoDespesa> getLancamentosDespesas(Long idUsuario) {
+		StringJoiner sql = new StringJoiner("\n");
+		
+		sql
+		.add(" SELECT TO_CHAR(l.data, 'MM/yyyy') AS dat, ")
+		.add(" 	   	  SUM(l.valor) AS valor              ")
+		.add(" FROM lancamento l                         ")
+		.add(" WHERE l.usuario = :pIdUsuario             ")
+		.add(" AND l.credito IS NULL                     ")
+		.add(" GROUP BY dat                              ")
+		.add(" ORDER BY dat                              ");
+		
+		Query query = this.manager.createNativeQuery(sql.toString());
+		query.setParameter("pIdUsuario", idUsuario);
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> results = query.getResultList();
+		
+		TOLancamentoDespesa to = null;
+		Map<String, TOLancamentoDespesa> mapDespesas = new HashMap<String, TOLancamentoDespesa>();
+		for (Object[] o : results) {
+			to = new TOLancamentoDespesa();
+			to.setData((String) o[0]);
+			to.setValor(((BigDecimal) o[1]).doubleValue());
+			
+			mapDespesas.put(to.getData(), to);
+		}
+		return mapDespesas;
+	}
+	
+	public LancamentoResponse getCreditosDespesasLancamentoByData(String data) {
+		return null;
 	}
 	
 	//----------------------------------------------- DESPESA -----------------------------------------------
