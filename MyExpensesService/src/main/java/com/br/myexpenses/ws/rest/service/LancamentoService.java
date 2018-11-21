@@ -24,4 +24,12 @@ public class LancamentoService {
 		return lc.getLancamentos(request);
 	}
 	
+	@POST
+	@Path("/getCreditosDespesaLancamento")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public LancamentoResponse getCreditosDespesaLancamento(LancamentoRequest request) throws Exception {
+		LancamentoControle lc = new LancamentoControle();
+		return lc.getCreditosDespesaLancamento(request);
+	}
 }

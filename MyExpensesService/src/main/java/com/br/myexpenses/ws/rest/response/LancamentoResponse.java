@@ -1,6 +1,7 @@
 package com.br.myexpenses.ws.rest.response;
 
 import java.util.Date;
+import java.util.List;
 
 public class LancamentoResponse extends DefaultResponse implements Comparable<LancamentoResponse> {
 	
@@ -9,8 +10,8 @@ public class LancamentoResponse extends DefaultResponse implements Comparable<La
 	private Double valor;
 	private Double totalCredito;
 	private Double totalDespesa;
-	private CreditoResponse creditoResponse;
-	private DespesaResponse despesaResponse;
+	private List<CreditoResponse> creditoResponse;
+	private List<DespesaResponse> despesaResponse;
 	
 	public Date getDataCompleta() {
 		return dataCompleta;
@@ -36,19 +37,19 @@ public class LancamentoResponse extends DefaultResponse implements Comparable<La
 		this.valor = valor;
 	}
 
-	public CreditoResponse getCreditoResponse() {
+	public List<CreditoResponse> getCreditoResponse() {
 		return creditoResponse;
 	}
 
-	public void setCreditoResponse(CreditoResponse creditoResponse) {
+	public void setCreditoResponse(List<CreditoResponse> creditoResponse) {
 		this.creditoResponse = creditoResponse;
 	}
 
-	public DespesaResponse getDespesaResponse() {
+	public List<DespesaResponse> getDespesaResponse() {
 		return despesaResponse;
 	}
 
-	public void setDespesaResponse(DespesaResponse despesaResponse) {
+	public void setDespesaResponse(List<DespesaResponse> despesaResponse) {
 		this.despesaResponse = despesaResponse;
 	}
 

@@ -23,6 +23,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import com.br.myexpenses.utils.Utils;
 import com.br.myexpenses.ws.rest.request.LancamentoRequest;
+import com.br.myexpenses.ws.rest.response.CreditoResponse;
+import com.br.myexpenses.ws.rest.response.DespesaResponse;
 import com.br.myexpenses.ws.rest.response.LancamentoResponse;
 
 public class LancamentoControle {
@@ -298,5 +300,89 @@ public class LancamentoControle {
 		cal.setTime(dataCompra);
         cal.add (Calendar.MONTH, 1);
 		return cal.getTime();
+	}
+
+	public LancamentoResponse getCreditosDespesaLancamento(LancamentoRequest request) {
+		LancamentoResponse lr = new LancamentoResponse();
+		lr.setData(request.getData());
+		lr.setValor(request.getValor());
+		lr.setTotalCredito(request.getTotalCredito());
+		lr.setTotalDespesa(request.getTotalDespesa());
+		lr.setCreditoResponse(this.gerCreditosByDateLancamento(request));
+		lr.setDespesaResponse(this.gerDespesasByDateLancamento(request));
+		
+		return lr;
+	}
+	
+	private List<CreditoResponse> gerCreditosByDateLancamento(LancamentoRequest request) {
+		StringJoiner sql = new StringJoiner("\n");
+		sql
+		.add("  SELECT l.credito FROM lancamento l			")
+		.add("  WHERE l.usuario = :pIdUsuario               ")
+		.add("  AND l.despesa IS NULL                       ")
+		.add("  AND to_char(l.data, 'MM/yyyy') = :pDate     ");
+		
+		Query query = this.manager.createNativeQuery(sql.toString());
+		query.setParameter("pIdUsuario", request.getIdUsuario());
+		query.setParameter("pDate", request.getData());
+		
+		@SuppressWarnings("unchecked")
+		List<Object> results = query.getResultList();
+		
+		CreditoResponse c = null;
+		List<CreditoResponse> list = new ArrayList<CreditoResponse>();
+		for (Object idCredito : results) {
+			Credito credito = this.manager.find(Credito.class, ((Integer) idCredito).longValue());
+			
+			c = new CreditoResponse();
+			c.setDescricao(credito.getDescricao());
+			c.setValor(Utils.duasCasasDecimais(credito.getValor()));
+			c.setData(credito.getData());
+			c.setNumParcela((Integer) credito.getParcela());
+			
+			list.add(c);
+		}
+		
+		if (Utils.listEmpty(list)) {
+			Collections.sort(list);
+		}
+		
+		return list;
+	}
+	
+	private List<DespesaResponse> gerDespesasByDateLancamento(LancamentoRequest request) {
+		StringJoiner sql = new StringJoiner("\n");
+		sql
+		.add("  SELECT l.despesa FROM lancamento l			")
+		.add("  WHERE l.usuario = :pIdUsuario               ")
+		.add("  AND l.credito IS NULL                       ")
+		.add("  AND to_char(l.data, 'MM/yyyy') = :pDate     ");
+		
+		Query query = this.manager.createNativeQuery(sql.toString());
+		query.setParameter("pIdUsuario", request.getIdUsuario());
+		query.setParameter("pDate", request.getData());
+		
+		@SuppressWarnings("unchecked")
+		List<Object> results = query.getResultList();
+		
+		DespesaResponse c = null;
+		List<DespesaResponse> list = new ArrayList<DespesaResponse>();
+		for (Object idDespesa : results) {
+			Despesa despesa = this.manager.find(Despesa.class, ((Integer) idDespesa).longValue());
+			
+			c = new DespesaResponse();
+			c.setDescricao(despesa.getDescricao());
+			c.setValor(Utils.duasCasasDecimais(despesa.getValor()));
+			c.setData(despesa.getDataCompra());
+			c.setNumParcela((Integer) despesa.getParcela());
+			
+			list.add(c);
+		}
+		
+		if (Utils.listEmpty(list)) {
+			Collections.sort(list);
+		}
+		
+		return list;
 	}
 }

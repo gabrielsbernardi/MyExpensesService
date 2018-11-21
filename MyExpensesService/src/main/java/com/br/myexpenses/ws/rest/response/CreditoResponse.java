@@ -2,7 +2,9 @@ package com.br.myexpenses.ws.rest.response;
 
 import java.util.Date;
 
-public class CreditoResponse extends DefaultResponse {
+import com.br.myexpenses.utils.Utils;
+
+public class CreditoResponse extends DefaultResponse implements Comparable<CreditoResponse> {
 	
 	private String descricao;
 	private Double valor;
@@ -39,6 +41,14 @@ public class CreditoResponse extends DefaultResponse {
 	
 	public void setNumParcela(Integer numParcela) {
 		this.numParcela = numParcela;
+	}
+
+	public int compareTo(CreditoResponse o) {
+		if (Utils.stringIsNull(this.getDescricao()) || Utils.stringIsNull(o.getDescricao())) {
+		      return 0;
+		}
+		
+	    return this.getDescricao().compareTo(o.getDescricao());
 	}
 	
 }
