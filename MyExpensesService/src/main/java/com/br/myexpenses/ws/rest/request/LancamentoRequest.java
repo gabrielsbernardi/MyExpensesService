@@ -9,6 +9,7 @@ public class LancamentoRequest extends DefaultRequest {
 	private Double valor;
 	private Double totalCredito;
 	private Double totalDespesa;
+	private Boolean isSearch;
 	
 	public Date getDataCompleta() {
 		return dataCompleta;
@@ -48,6 +49,14 @@ public class LancamentoRequest extends DefaultRequest {
 	
 	public void setTotalDespesa(Double totalDespesa) {
 		this.totalDespesa = totalDespesa;
+	}
+
+	public Boolean getIsSearch() {
+		return isSearch;
+	}
+
+	public void setIsSearch(Boolean isSearch) {
+		this.isSearch = isSearch;
 	}
 	
 }

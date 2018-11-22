@@ -2,7 +2,6 @@ package com.br.myexpenses.utils;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Date;
 import java.util.List;
 
 public class Utils {
@@ -22,4 +21,15 @@ public class Utils {
 	    return Double.valueOf((format.format(valor)));
 	}
 	
+	public static Boolean booleanIsTrue(Boolean bool) {
+		return bool != null && bool;
+	}
+	
+	public static String sqlAndEqualsPesquisaString(String column, String param) {
+		return " AND UPPER(" + column + ") LIKE '%" + param.toUpperCase() + "%'";
+	}
+	
+	public static String sqlAndEqualsPesquisaInteger(String column, Integer param) {
+		return " AND " + column + " = " + param;
+	}
 }

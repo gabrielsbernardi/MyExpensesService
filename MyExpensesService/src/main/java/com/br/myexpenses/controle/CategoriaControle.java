@@ -88,18 +88,29 @@ public class CategoriaControle {
 		return !Utils.listEmpty(query.getResultList());
 	}
 	
-	public List<CategoriaResponse> getCategorias(Long idUsuario) {
+	public List<CategoriaResponse> getCategorias(CategoriaRequest request) {
 		StringJoiner sql = new StringJoiner("\n");
 		sql
 		.add(" SELECT c.id,       			 ")
 		.add("        c.tipo,     			 ")
 		.add("        c.descricao 			 ")
 		.add(" FROM categoria c   			 ")
-		.add(" WHERE c.usuario = :pIdUsuario ")
-		.add(" ORDER BY c.tipo				 ");
+		.add(" WHERE c.usuario = :pIdUsuario ");
+		
+		if (Utils.booleanIsTrue(request.getIsSearch())) {
+			if (!Utils.stringIsNull(request.getTipoCategoria())) {
+				sql.add(Utils.sqlAndEqualsPesquisaString("c.tipo", request.getTipoCategoria()));
+			}
+			
+			if (!Utils.stringIsNull(request.getDescricao())) {
+				sql.add(Utils.sqlAndEqualsPesquisaString("c.descricao", request.getDescricao()));
+			}
+		}
+		
+		sql.add(" ORDER BY c.tipo				 ");
 		
 		Query query = this.manager.createNativeQuery(sql.toString());
-		query.setParameter("pIdUsuario", idUsuario);
+		query.setParameter("pIdUsuario", request.getIdUsuario());
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> results = query.getResultList();

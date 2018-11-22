@@ -21,7 +21,7 @@ public class CreditoService {
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<CreditoResponse> getCreditos(CreditoRequest request) throws Exception {
 		CreditoControle cc = new CreditoControle();
-		return cc.getCreditos(request.getIdUsuario());
+		return cc.getCreditos(request);
 	}
 	
 	@POST

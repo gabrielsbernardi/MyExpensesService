@@ -11,6 +11,7 @@ public class CreditoRequest extends DefaultRequest {
 	private String descricao;
 	private Double valor;
 	private Date data;
+	private Boolean isSearch;
 	
 	public Long getUsuario() {
 		return usuario;
@@ -48,6 +49,11 @@ public class CreditoRequest extends DefaultRequest {
 	public void setData(Date data) {
 		this.data = data;
 	}
-	
+	public Boolean getIsSearch() {
+		return isSearch;
+	}
+	public void setIsSearch(Boolean isSearch) {
+		this.isSearch = isSearch;
+	}
 	
 }

@@ -10,6 +10,7 @@ import javax.persistence.*;
 
 import com.br.myexpenses.data.ConexaoDB;
 import com.br.myexpenses.model.Despesa;
+import com.br.myexpenses.utils.Utils;
 import com.br.myexpenses.ws.rest.request.DespesaRequest;
 import com.br.myexpenses.ws.rest.response.DespesaCategoriaResponse;
 import com.br.myexpenses.ws.rest.response.DespesaResponse;
@@ -95,7 +96,7 @@ public class DespesaControle {
 		return dr;
 	}
 	
-	public List<DespesaResponse> getDespesas(Long idUsuario) {
+	public List<DespesaResponse> getDespesas(DespesaRequest request) {
 		StringJoiner sql = new StringJoiner("\n");
 		sql
 		.add(" SELECT d.id,       			   				  ")
@@ -108,11 +109,26 @@ public class DespesaControle {
 		.add("        c.tipo AS tipo_categoria 				  ")
 		.add(" FROM despesa d   			   				  ")
 		.add(" INNER JOIN categoria c ON (c.id = d.categoria) ")
-		.add(" WHERE d.usuario = :pIdUsuario   				  ")
-		.add(" ORDER BY d.descricao 		   				  ");
+		.add(" WHERE d.usuario = :pIdUsuario   				  ");
+		
+		if (Utils.booleanIsTrue(request.getIsSearch())) {
+			if (!Utils.stringIsNull(request.getDescricao())) {
+				sql.add(Utils.sqlAndEqualsPesquisaString("d.descricao", request.getDescricao()));
+			}
+			
+			if (request.getParcela() != null) {
+				sql.add(Utils.sqlAndEqualsPesquisaInteger("d.parcela", request.getParcela()));
+			}
+			
+			if (!Utils.stringIsNull(request.getLocalCompra())) {
+				sql.add(Utils.sqlAndEqualsPesquisaString("d.local_compra", request.getLocalCompra()));
+			}
+		}
+		
+		sql.add(" ORDER BY d.descricao ");
 		
 		Query query = this.manager.createNativeQuery(sql.toString());
-		query.setParameter("pIdUsuario", idUsuario);
+		query.setParameter("pIdUsuario", request.getIdUsuario());
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> results = query.getResultList();

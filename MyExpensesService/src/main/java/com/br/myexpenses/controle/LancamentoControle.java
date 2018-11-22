@@ -118,7 +118,9 @@ public class LancamentoControle {
 			}
 		}
 		
-		Collections.sort(listReponse);
+		if (!Utils.listEmpty(listReponse)) {
+			Collections.sort(listReponse);
+		}
 		
 		return listReponse;
 	}

@@ -11,7 +11,7 @@ public class DespesaRequest extends DefaultRequest {
 	private Date dataCompra;
 	private Long categoria;
 	private double valor;
-	
+	private Boolean isSearch;
 	
 	public Long getId() {
 		return id;
@@ -68,6 +68,13 @@ public class DespesaRequest extends DefaultRequest {
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-	
+
+	public Boolean getIsSearch() {
+		return isSearch;
+	}
+
+	public void setIsSearch(Boolean isSearch) {
+		this.isSearch = isSearch;
+	}
 	
 }

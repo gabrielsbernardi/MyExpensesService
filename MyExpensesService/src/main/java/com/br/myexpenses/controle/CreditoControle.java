@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import com.br.myexpenses.data.ConexaoDB;
 import com.br.myexpenses.model.Credito;
+import com.br.myexpenses.utils.Utils;
 import com.br.myexpenses.ws.rest.request.CreditoRequest;
 import com.br.myexpenses.ws.rest.response.CreditoResponse;
 
@@ -91,7 +92,7 @@ public class CreditoControle {
 		return cr;
 	}
 	
-	public List<CreditoResponse> getCreditos(Long idUsuario){
+	public List<CreditoResponse> getCreditos(CreditoRequest request){
 		StringJoiner sql = new StringJoiner("\n");
 		sql
 		.add(" SELECT c.id,  		   		 ")
@@ -100,11 +101,22 @@ public class CreditoControle {
 		.add("        c.valor,  	   		 ")
 		.add("        c.data_credito   		 ")
 		.add(" FROM credito c          		 ")
-		.add(" WHERE c.usuario = :pIdUsuario ")
-		.add(" ORDER BY c.descricao 		 ");
+		.add(" WHERE c.usuario = :pIdUsuario ");
+		
+		if (Utils.booleanIsTrue(request.getIsSearch())) {
+			if (!Utils.stringIsNull(request.getDescricao())) {
+				sql.add(Utils.sqlAndEqualsPesquisaString("c.descricao", request.getDescricao()));
+			}
+			
+			if (request.getParcela() != null) {
+				sql.add(Utils.sqlAndEqualsPesquisaInteger("c.parcela", request.getParcela()));
+			}
+		}
+		
+		sql.add(" ORDER BY c.descricao 		 ");
 		
 		Query query = this.manager.createNativeQuery(sql.toString());
-		query.setParameter("pIdUsuario", idUsuario);
+		query.setParameter("pIdUsuario", request.getIdUsuario());
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> results = query.getResultList();

@@ -5,6 +5,7 @@ public class CategoriaRequest extends DefaultRequest {
 	private Long id;
 	private String tipoCategoria;
 	private String descricao;
+	private Boolean isSearch;
 	
 	public Long getId() {
 		return id;
@@ -29,5 +30,13 @@ public class CategoriaRequest extends DefaultRequest {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
+
+	public Boolean getIsSearch() {
+		return isSearch;
+	}
+
+	public void setIsSearch(Boolean isSearch) {
+		this.isSearch = isSearch;
+	}
+
 }

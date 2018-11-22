@@ -21,7 +21,7 @@ public class CategoriaService {
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<CategoriaResponse> getCategorias(CategoriaRequest request) throws Exception {
 		CategoriaControle cc = new CategoriaControle();
-		return cc.getCategorias(request.getIdUsuario());
+		return cc.getCategorias(request);
 	}
 	
 	@POST

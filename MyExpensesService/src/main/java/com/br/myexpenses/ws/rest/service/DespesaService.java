@@ -22,7 +22,7 @@ public class DespesaService {
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<DespesaResponse> getDespesas(DespesaRequest request) throws Exception {
 		DespesaControle dc = new DespesaControle();
-		return dc.getDespesas(request.getIdUsuario());
+		return dc.getDespesas(request);
 	}
 	
 	@POST
